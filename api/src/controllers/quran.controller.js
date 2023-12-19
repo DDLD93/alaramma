@@ -1,5 +1,4 @@
 require('dotenv').config();
-const path = require('path/posix');
 const { GEMINI_SECRET } = require("../configs")
 const { Translation } = require("../models/quran.model");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
@@ -15,6 +14,15 @@ class QuranCtrl {
             const vecEmbdd = await this.stringToVector(text);
             const translations = await this.vectorSearch(vecEmbdd);
             return { ok: true, data: translations };
+        } catch (error) {
+            console.error('Error in queryDb:', error.message);
+            return { ok: false, message: error.message };
+        }
+    }
+    async getAll() {
+        try {
+            let data = await Translation.find()
+            return { ok: true, data };
         } catch (error) {
             console.error('Error in queryDb:', error.message);
             return { ok: false, message: error.message };
@@ -62,8 +70,8 @@ class QuranCtrl {
                         index: "vector_index",
                         path: "contentEmbedding",
                         queryVector: queryVector,
-                        numCandidates: 20,
-                        limit: 5
+                        numCandidates: 100,
+                        limit: 3
                     },
                 }, {
                     $project: {

@@ -1,6 +1,6 @@
 module github.com/ddld93/gemini_embedding
 
-go 1.21.1
+go 1.21.5
 
 require (
 	github.com/google/generative-ai-go v0.5.0

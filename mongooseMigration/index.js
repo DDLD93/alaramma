@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Chapter, Verse, Translation, Tafseer, AudioVerse } = require('./model'); // Import your Mongoose models
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://ddld93:1234567890@cluster0.fljiocn.mongodb.net/qurandb');
+mongoose.connect('mongodb+srv://ddld93:1234567890@cluster0.fljiocn.mongodb.net/betaQuran');
 const dbMongo = mongoose.connection;
 dbMongo.on('error', console.error.bind(console, 'MongoDB connection error:'));
 

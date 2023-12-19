@@ -38,7 +38,7 @@ if err != nil {
 }
 defer client.Close()
 em := client.EmbeddingModel("embedding-001")
-res, err := em.EmbedContent(ctx, genai.Text("The quick brown fox jumps over the lazy dog."))
+res, err := em.EmbedContent(ctx, genai.Text(content));
 
 if err != nil {
     return nil,err
@@ -49,9 +49,10 @@ if err != nil {
 // updateAllContentEmbeddings updates the contentEmbedding of all Translation documents in the collection.
 func updateAllContentEmbeddings(client *mongo.Client) error {
     ctx := context.TODO()
-    collection := client.Database("qurandb").Collection("translations")
+    collection := client.Database("betaQuran").Collection("translations");
 
-    cursor, err := collection.Find(ctx, bson.M{"contentEmbedding": []float32{}})
+    // cursor, err := collection.Find(ctx, bson.M{"contentEmbedding": []float32{}})
+    cursor, err := collection.Find(ctx, bson.M{"contentEmbedding": bson.M{"$size": 0}})
     if err != nil {
         return err
     }
@@ -68,6 +69,7 @@ func updateAllContentEmbeddings(client *mongo.Client) error {
             totalFailures++
             continue
         }
+        // fmt.Printf(translation.Content);
 
         embedding , err := getVectorEmbedding(translation.Content)
         if err != nil {
